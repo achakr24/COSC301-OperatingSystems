@@ -1,0 +1,5 @@
+env = Environment()
+env.Append(CFLAGS=' -g -Wall')
+# if you add more files to your program, include them
+# in the python list below (i.e., to ['main.c'])
+env.Program('lab05', ['main.c'])

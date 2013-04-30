@@ -1,0 +1,61 @@
+main.c
+list.h
+list.c
+
+in main
+----
+struct element * head = NULL;
+.
+.
+.
+add_to_list(number,head);
+
+
+
+
+void add_to_list(int number, struct element* head)
+{
+  struct element* tmp = (struct element *)malloc(....);
+  tmp -> value = number;
+  tmp -> next = NULL;
+
+  if (head ==NULL)
+  {
+    head = tmp;
+  }
+  else{
+    ...
+  }
+}
+
+NOW THAT ABOVE wont work as expected because pass by value for the pointer head, so won't actually work for the pointer we started with. SO we actually need a pointer to a pointer.
+
+SUCH AS here:
+
+void add_to_list(int number, struct element** head)
+{
+  struct element* tmp = (struct element *) malloc(sizeof(struct node));
+  tmp -> value = number;
+  tmp -> next = NULL;
+
+  if (*head == NULL)
+  {
+    *head = tmp;
+  }
+  else{
+    // head is not NULL
+
+    struct element* curr = *head;
+    if(number < curr -> value)
+    {
+	    //new head of list!
+    }
+    else
+    {
+
+    }
+
+    ...
+  }
+
+}

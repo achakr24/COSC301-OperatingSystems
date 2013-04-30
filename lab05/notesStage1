@@ -1,0 +1,49 @@
+STAGE 1
+
+
+create a shell
+
+prompt> /bin/ls -l /
+
+
+
+tokens
+-----
+
+"/bin/ls"
+"-l"
+"/"
+NULL
+
+
+
+fork()
+
+execv(tokens[0], tokens)
+
+  wait(status)
+
+  and waitpid(pid, status, tags)
+
+
+NOW:
+
+ls ; ps
+
+1) "sequential mode"
+
+- run each command one by one, waiting for each one
+
+2) parallel mode
+
+-run each cmd "in parallel"
+-wait for all to complete before moving on
+
+
+BUILT-INS
+mode parallel
+mode sequential
+(and mode just prints what mode youre in)
+exit
+
+

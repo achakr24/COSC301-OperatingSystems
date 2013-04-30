@@ -1,0 +1,4 @@
+import os
+env = Environment(ENV = os.environ)
+env.Append(CFLAGS=' -g -Wall')
+env.Program('lab03', ['main.c', 'list.c'])

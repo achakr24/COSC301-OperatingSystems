@@ -1,0 +1,13 @@
+env = Environment()
+env.Append(CFLAGS=['-g','-Wall'])
+env.Program('ctxtest', ['ctxtest.c','threadsalive.c'])
+env.Program('test01', ['test01.c','threadsalive.c'])
+
+print '*' * 80
+print '''I'm not compiling test02 or test03 (only ctxtest and test01); 
+uncomment the other lines in SConstruct when you want to use those
+programs for testing.'''
+print '*' * 80
+
+#env.Program('test02', ['test02.c','threadsalive.c'])
+#env.Program('test03', ['test03.c','threadsalive.c'])

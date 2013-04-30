@@ -1,0 +1,7 @@
+import os
+env1 = Environment()
+env1.SharedLibrary('forgetful', ['forgetful.c'])
+
+env2 = Environment()
+env2.Append(CFLAGS=' -g -Wall')
+env2.Program('forgettest', ['forgettest.c','forgetful.c'])

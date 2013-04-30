@@ -1,0 +1,55 @@
+Q1) The cd command places you in the home directory. 
+The ls command listed the contents of the directory 'cosc301' in my home directory. The -R option includes contents of subdirectories, the -F option for our case marked directories with a trailing slash, and the -l shows you detailed info 
+
+Q2)
+firefox &
+fg
+^C
+
+Q3)
+chmod 600 systems.txt
+ls -l systems.txt
+
+Q4)
+chmod 500 perms.sh
+The dot '.' refers to the current directory.
+When something is entered into a shell, it assumes that it is a command. The shell then checks if the first string (i.e., sequence of characters) in that text is a built-in command or the absolute path to an executable.So, if we don't add a './' (which states that our .sh is an executible in the current directory), it assumes it's a built-in and says:
+perms.sh: command not found
+
+Q5)
+chmod 200 systems.txt
+--w------- 1 gragtah students 79 2011-08-31 16:44 systems.txt
+echo haiku >> systems.txt 
+
+Q6)
+1. grep x systems.txt | wc -l
+2. grep -v "os" systems.txt | wc -l
+3. ps auxww | grep `whoami`| awk '{print $1, $5, $11}' | sort -k1 -nr
+4. ps auxww | awk '{print $1}' | sort -k1| uniq -c| sort -k1 -nr
+5. ps lists processes, -e for all, and f for full. grep root searches for 'root' (searching for root user), and less opens up the output for viewing a little at a time. Works faster than other text editors for large amounts of text since less does not have to read the entire input file before starting.
+6. pwd | xargs du --max-depth=1 | sort -k1 -nr
+
+Q7) 
+5. M systems.txt indicates that the file systems.txt was modified and there are changes to be committed since last commit.Doing hg diff gives us the modifications made in the latest uncommitted revision. 
+7.
+changeset:   1:0545b55cdb82
+tag:         tip
+user:        Gaurav Ragtah <gragtah@colgate.edu>
+date:        Sat Sep 03 05:19:51 2011 -0400
+summary:     Added ms-dos to systems.txt
+
+changeset:   0:ca72b9552122
+user:        Gaurav Ragtah <gragtah@colgate.edu>
+date:        Sat Sep 03 05:14:45 2011 -0400
+summary:     initial commit
+9. 
+diff -r 84153a905bc7 systems.txt
+--- a/systems.txt	Tue Sep 06 23:55:46 2011 -0400
++++ b/systems.txt	Tue Sep 06 23:57:34 2011 -0400
+@@ -1,4 +1,5 @@
+-ms-dos
++android
++freebsd
+ windows
+ macos
+ linux

@@ -1,0 +1,122 @@
+
+Brian Merrifield
+Adam Lock
+Gaurav Ragtah
+
+
+1. The return value from syscalls[num]() is stored in a register eax, and the user-mode process can access that. 
+
+2. The code in usys.S converts the kernel version of the call to the version we want to use outside the kernel space. The preprocessor macro contains assembly code and is called upon calling all of the system calls. Effectively when SYSCALL(getcount) is called, a copy of the aseembly code is given with 'getcount' substituted for name. Hence a user-space program can call our system call by calling SYSCALL(getcount). The system call number is moved into the eax register so that the kernel can execute the syscall, then the kernel relinquishes control back to the user.
+
+3. One cannot pass parameters back to the kernel side so instead of trying to mess with memory and move the arguments to kernel side, the parameter is just void and the kernel peeks back over to user side and figures out what the arguments are. 
+
+4. Multiple processors might call the syscall function at the exact same time, and then the counter will only be updated once since there is no block during it being accessed.
+
+5. 
+Added this function:
+
+void
+getcounttest(void)
+{
+    printf(stdout, "getcount test\n");
+
+    printf(stdout, "getcount(20) yields : %d\n", getcount(20));
+    printf(stdout, "getcount(22) yields : %d\n", getcount(22));
+    printf(stdout, "getcount test passed\n");
+}
+
+and called it before exectest() in main.
+
+Last 5-6 lines of the following output are evidence that the system call runs as expected.
+
+$ ./usertests
+usertests starting
+bigarg test
+bigarg test ok
+bss test
+bss test ok
+sbrk test
+pid 6 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0xa0000--kill proc
+pid 7 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0xac350--kill proc
+pid 8 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0xb86a0--kill proc
+pid 9 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0xc49f0--kill proc
+pid 10 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0xd0d40--kill proc
+pid 11 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0xdd090--kill proc
+pid 12 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0xe93e0--kill proc
+pid 13 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0xf5730--kill proc
+pid 14 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x101a80--kill proc
+pid 15 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x10ddd0--kill proc
+pid 16 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x11a120--kill proc
+pid 17 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x126470--kill proc
+pid 18 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0x1327c0--kill proc
+pid 19 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x13eb10--kill proc
+pid 20 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x14ae60--kill proc
+pid 21 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0x1571b0--kill proc
+pid 22 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0x163500--kill proc
+pid 23 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x16f850--kill proc
+pid 24 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0x17bba0--kill proc
+pid 25 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0x187ef0--kill proc
+pid 26 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x194240--kill proc
+pid 27 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x1a0590--kill proc
+pid 28 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x1ac8e0--kill proc
+pid 29 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x1b8c30--kill proc
+pid 30 usertests: trap 14 err 5 on cpu 0 eip 0x79d addr 0x1c4f80--kill proc
+pid 31 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0x1d12d0--kill proc
+pid 32 usertests: trap 14 err 5 on cpu 1 eip 0x79d addr 0x1dd620--kill proc
+allocuvm out of memory
+allocuvm out of memory
+allocuvm out of memory
+allocuvm out of memory
+sbrk test OK
+validate test
+validate ok
+open test
+open test ok
+small file test
+creat small succeeded; ok
+writes ok
+open small succeeded ok
+read succeeded ok
+small file test ok
+big files test
+big files ok
+many creates, followed by unlink test
+many creates, followed by unlink; ok
+mem test
+mem ok
+pipe1 ok
+preempt: kill... wait... preempt ok
+exitwait ok
+rmdot test
+rmdot ok
+fourteen test
+fourteen ok
+bigfile test
+bigfile test ok
+subdir test
+subdir ok
+concreate test
+concreate ok
+linktest
+linktest ok
+unlinkread test
+unlinkread ok
+createdelete test
+createdelete ok
+twofiles test
+twofiles ok
+sharedfd ok
+dir vs file
+dir vs file OK
+empty file name
+empty file name OK
+fork test
+fork test OK
+bigdir test
+bigdir ok
+getcount test
+getcount(20) yields : 577
+getcount(22) yields : 1
+getcount test passed
+exec test
+ALL TESTS PASSED

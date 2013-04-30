@@ -1,0 +1,16 @@
+
+in user.h
+set to void, before was int
+
+
+in syscall.c
+at line 100
+int sys_getcount(void);
+
+change to int?
+
+
+`
+make qemu-nox (start emulator w/o window)
+
+ctrl+a x -kill emulator

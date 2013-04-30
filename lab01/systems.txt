@@ -1,0 +1,15 @@
+android
+freebsd
+windows
+macos
+linux
+os/360
+amigaos
+beos
+ios
+ftx
+vms
+hp/ux
+ultrix
+solaris
+haiku
